@@ -185,6 +185,7 @@ example(ex_window_constraints ${FONT} ${IMAGE})
 example(ex_window_title ${IMAGE} ${FONT} ${DATA_IMAGES})
 example(ex_winfull)
 example(ex_video ${AUDIO} ${FONT} ${PRIM} ${VIDEO})
+example(ex_window_maximized ${FONT} ${IMAGE})
 
 if(WANT_D3D AND D3DX9_FOUND)
     example(ex_d3d ex_d3d.cpp EXTRA_LIBS ${D3DX9_LIBRARY})
