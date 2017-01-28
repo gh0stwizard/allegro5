@@ -56,6 +56,7 @@ main(int argc, char **argv)
 
 		case ALLEGRO_EVENT_DISPLAY_LOST:
 			log_printf("DISPLAY LOST\n");
+			al_clear_keyboard_state(display);
 			break;
 
 		case ALLEGRO_EVENT_DISPLAY_FOUND:
@@ -64,20 +65,20 @@ main(int argc, char **argv)
 
 		case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
 			log_printf("SWITCH IN\n");
-			al_clear_keyboard_state(display);
 			break;
 
 		case ALLEGRO_EVENT_DISPLAY_SWITCH_OUT:
 			log_printf("SWITCH OUT\n");
+			al_clear_keyboard_state(display);
 			break;
 
 		case ALLEGRO_EVENT_DISPLAY_CONNECTED:
 			log_printf("DISPLAY CONNECTED\n");
-			al_clear_keyboard_state(display);
 			break;
 
 		case ALLEGRO_EVENT_DISPLAY_DISCONNECTED:
 			log_printf("DISPLAY DISCONNECTED\n");
+			al_clear_keyboard_state(display);
 			break;
 
 		case ALLEGRO_EVENT_KEY_DOWN:
@@ -91,9 +92,9 @@ main(int argc, char **argv)
 				al_unregister_event_source(queue, al_get_keyboard_event_source());
 				al_unregister_event_source(queue, al_get_display_event_source(display));
 				switch_mode(&display);
-				al_clear_keyboard_state(display);
 				al_register_event_source(queue, al_get_display_event_source(display));
 				al_register_event_source(queue, al_get_keyboard_event_source());
+				al_clear_keyboard_state(display);
 			}
 			break;
 
