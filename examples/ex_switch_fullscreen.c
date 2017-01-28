@@ -51,13 +51,35 @@ main(int argc, char **argv)
 		al_wait_for_event(queue, &event);
 
 		switch (event.type) {
+		case ALLEGRO_EVENT_DISPLAY_CLOSE:
+			goto done;
+
+		case ALLEGRO_EVENT_DISPLAY_LOST:
+			log_printf("DISPLAY LOST\n");
+			break;
+
+		case ALLEGRO_EVENT_DISPLAY_FOUND:
+			log_printf("DISPLAY FOUND\n");
+			break;
+
 		case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
-		case ALLEGRO_EVENT_DISPLAY_CONNECTED:
+			log_printf("SWITCH IN\n");
 			al_clear_keyboard_state(display);
 			break;
 
-		case ALLEGRO_EVENT_DISPLAY_CLOSE:
-			goto done;
+		case ALLEGRO_EVENT_DISPLAY_SWITCH_OUT:
+			log_printf("SWITCH OUT\n");
+			break;
+
+		case ALLEGRO_EVENT_DISPLAY_CONNECTED:
+			log_printf("DISPLAY CONNECTED\n");
+			al_clear_keyboard_state(display);
+			break;
+
+		case ALLEGRO_EVENT_DISPLAY_DISCONNECTED:
+			log_printf("DISPLAY DISCONNECTED\n");
+			break;
+
 		case ALLEGRO_EVENT_KEY_DOWN:
 			if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
 				goto done;
@@ -66,10 +88,15 @@ main(int argc, char **argv)
 
 			/* re-create display */
 			if (event.keyboard.keycode == ALLEGRO_KEY_F11) {
+				al_unregister_event_source(queue, al_get_keyboard_event_source());
+				al_unregister_event_source(queue, al_get_display_event_source(display));
 				switch_mode(&display);
 				al_clear_keyboard_state(display);
+				al_register_event_source(queue, al_get_display_event_source(display));
+				al_register_event_source(queue, al_get_keyboard_event_source());
 			}
 			break;
+
 		case ALLEGRO_EVENT_KEY_UP:
 			log_key("KEY_UP", event.keyboard.keycode, 0, 0);
 			break;
